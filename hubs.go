@@ -1,8 +1,8 @@
 package faceitgo
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"fmt"
+	"net/url"
 )
 
 type (
@@ -129,120 +129,81 @@ type (
 
 func (c *RESTClient) GetHub(id string) (*Hub, error) {
 	var hub Hub
-	resp, err := c.get("/hubs/" + id)
-	if err != nil {
+
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s", id), &hub); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &hub)
-	if err != nil {
-		return nil, err
-	}
-
-	return &hub, err
+	return &hub, nil
 }
 
-func (c *RESTClient) GetHubMatches(id string) (*HubMatches, error) {
+func (c *RESTClient) GetHubMatches(id string, gtype string, offset string, limit string) (*HubMatches, error) {
 	var hubMatches HubMatches
-	resp, err := c.get("/hubs/" + id + "/matches")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("type", gtype)
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/matches?%s", id, params.Encode()), &hubMatches); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &hubMatches)
-	if err != nil {
-		return nil, err
-	}
-
-	return &hubMatches, err
+	return &hubMatches, nil
 }
 
-func (c *RESTClient) GetHubMembers(id string) (*HubMembers, error) {
+func (c *RESTClient) GetHubMembers(id string, offset string, limit string) (*HubMembers, error) {
 	var hubMembers HubMembers
-	resp, err := c.get("/hubs/" + id + "/members")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/members?%s", id, params.Encode()), &hubMembers); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &hubMembers)
-	if err != nil {
-		return nil, err
-	}
-
-	return &hubMembers, err
+	return &hubMembers, nil
 }
 
-func (c *RESTClient) GetHubRoles(id string) (*HubRoles, error) {
+func (c *RESTClient) GetHubRoles(id string, offset string, limit string) (*HubRoles, error) {
 	var hubRoles HubRoles
-	resp, err := c.get("/hubs/" + id + "/roles")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/roles?%s", id, params.Encode()), &hubRoles); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &hubRoles)
-	if err != nil {
-		return nil, err
-	}
-
-	return &hubRoles, err
+	return &hubRoles, nil
 }
 
-func (c *RESTClient) GetHubRules(id string) (*HubRules, error) {
+func (c *RESTClient) GetHubRules(id string, offset string, limit string) (*HubRules, error) {
 	var hubRules HubRules
-	resp, err := c.get("/hubs/" + id + "/rules")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/rules?%s", id, params.Encode()), &hubRules); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &hubRules)
-	if err != nil {
-		return nil, err
-	}
-
-	return &hubRules, err
+	return &hubRules, nil
 }
 
-func (c *RESTClient) GetHubStats(id string) (*HubStats, error) {
+func (c *RESTClient) GetHubStats(id string, offset string, limit string) (*HubStats, error) {
 	var hubStats HubStats
-	resp, err := c.get("/hubs/" + id + "/stats")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/stats?%s", id, params.Encode()), &hubStats); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &hubStats)
-	if err != nil {
-		return nil, err
-	}
-
-	return &hubStats, err
+	return &hubStats, nil
 }
