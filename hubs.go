@@ -1,5 +1,10 @@
 package faceitgo
 
+import (
+	"encoding/json"
+	"io/ioutil"
+)
+
 type (
 	HubStats struct {
 		GameID  string `json:"game_id"`
@@ -121,3 +126,123 @@ type (
 		RuleID          string    `json:"rule_id"`
 	}
 )
+
+func (c *RESTClient) GetHub(id string) (*Hub, error) {
+	var hub Hub
+	resp, err := c.get("/hubs/" + id)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &hub)
+	if err != nil {
+		return nil, err
+	}
+
+	return &hub, err
+}
+
+func (c *RESTClient) GetHubMatches(id string) (*HubMatches, error) {
+	var hubMatches HubMatches
+	resp, err := c.get("/hubs/" + id + "/matches")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &hubMatches)
+	if err != nil {
+		return nil, err
+	}
+
+	return &hubMatches, err
+}
+
+func (c *RESTClient) GetHubMembers(id string) (*HubMembers, error) {
+	var hubMembers HubMembers
+	resp, err := c.get("/hubs/" + id + "/members")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &hubMembers)
+	if err != nil {
+		return nil, err
+	}
+
+	return &hubMembers, err
+}
+
+func (c *RESTClient) GetHubRoles(id string) (*HubRoles, error) {
+	var hubRoles HubRoles
+	resp, err := c.get("/hubs/" + id + "/roles")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &hubRoles)
+	if err != nil {
+		return nil, err
+	}
+
+	return &hubRoles, err
+}
+
+func (c *RESTClient) GetHubRules(id string) (*HubRules, error) {
+	var hubRules HubRules
+	resp, err := c.get("/hubs/" + id + "/rules")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &hubRules)
+	if err != nil {
+		return nil, err
+	}
+
+	return &hubRules, err
+}
+
+func (c *RESTClient) GetHubStats(id string) (*HubStats, error) {
+	var hubStats HubStats
+	resp, err := c.get("/hubs/" + id + "/stats")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &hubStats)
+	if err != nil {
+		return nil, err
+	}
+
+	return &hubStats, err
+}

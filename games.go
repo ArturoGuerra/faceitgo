@@ -1,5 +1,10 @@
 package faceitgo
 
+import (
+	"encoding/json"
+	"io/ioutil"
+)
+
 type (
 	GameAssets struct {
 		Cover        string `json:"cover"`
@@ -23,4 +28,70 @@ type (
 		Regions      []string   `json:"regions"`
 		ShortLabel   string     `json:"short_label"`
 	}
+
+	Games struct {
+		Start int    `json:"start"`
+		End   int    `json:"end"`
+		Items []Game `json:"items"`
+	}
 )
+
+func (c *RESTClient) GetGames(offset string, limit string) (*Games, error) {
+	var games Games
+	resp, err := c.Get("games")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &games)
+	if err != nil {
+		return nil, err
+	}
+
+	return &games, err
+}
+
+func (c *RESTClient) GetGame(gameID string) (*Game, error) {
+	var game Game
+	resp, err := c.Get("games/" + gameID)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &game)
+	if err != nil {
+		return nil, err
+	}
+
+	return &game, err
+}
+
+func (c *RESTClient) GetGameParent(gameID string) (*Game, error) {
+	var game Game
+	resp, err := c.Get("games/" + gameID + "/parent")
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &game)
+	if err != nil {
+		return nil, err
+	}
+
+	return &game, err
+}

@@ -1,5 +1,10 @@
 package faceitgo
 
+import (
+	"encoding/json"
+	"io/ioutil"
+)
+
 type (
 	Match struct {
 		BestOf                  int      `json:"best_of"`
@@ -68,3 +73,23 @@ type (
 		} `json:"rounds"`
 	}
 )
+
+func (c *RESTClient) GetMatch(matchID string) (*Match, error) {
+	var match Match
+	resp, err := c.get("/matches/" + matchID)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	err = json.Unmarshal(body, &match)
+	if err != nil {
+		return nil, err
+	}
+
+	return &match, err
+}
