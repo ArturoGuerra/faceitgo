@@ -1,8 +1,8 @@
 package faceitgo
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"fmt"
+	"net/url"
 )
 
 type (
@@ -190,7 +190,14 @@ type (
 func (c *RESTClient) GetChampionships(game string, gtype string, offset string, limit string) (*Championships, error) {
 	var championships Championships
 
-	if err := c.getJSON("/championships", &championships); err != nil {
+	params := url.Values{}
+	params.Add("game", game)
+	params.Add("type", gtype)
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	u := fmt.Sprintf("/championships?%s", params.Encode())
+	if err := c.getJSON(u, &championships); err != nil {
 		return nil, err
 	}
 
@@ -199,80 +206,56 @@ func (c *RESTClient) GetChampionships(game string, gtype string, offset string, 
 
 func (c *RESTClient) GetChampionship(championshipID string) (*Championship, error) {
 	var championship Championship
-	resp, err := c.get("/championships/" + championshipID)
-	if err != nil {
+
+	if err := c.getJSON("/championships/"+championshipID, &championship); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &championship)
-	if err != nil {
-		return nil, err
-	}
-
-	return &championship, err
+	return &championship, nil
 }
 
 func (c *RESTClient) GetChampionshipMatches(championshipID string, gtype string, offset string, limit string) (*ChampionshipMatches, error) {
 	var championshipMatches ChampionshipMatches
-	resp, err := c.get("/championships/" + championshipID + "/matches")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("type", gtype)
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	u := fmt.Sprintf("/championships/%s/matches?%s", championshipID, params.Encode())
+	if err := c.getJSON(u, &championshipMatches); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &championshipMatches)
-	if err != nil {
-		return nil, err
-	}
-
-	return &championshipMatches, err
+	return &championshipMatches, nil
 }
 
 func (c *RESTClient) GetChampionshipResults(championshipID string, offset string, limit string) (*ChampionshipResults, error) {
 	var championshipResults ChampionshipResults
-	resp, err := c.get("/championships/" + championshipID + "/results")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	u := fmt.Sprintf("/championships/%s/results?%s", championshipID, params.Encode())
+
+	if err := c.getJSON(u, &championshipResults); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &championshipResults)
-	if err != nil {
-		return nil, err
-	}
-
-	return &championshipResults, err
+	return &championshipResults, nil
 }
 
 func (c *RESTClient) GetChampionshipSubscriptions(championshipID string, offset string, limit string) (*ChampionshipSubscriptions, error) {
 	var championshipSubscriptions ChampionshipSubscriptions
-	resp, err := c.get("/championships/" + championshipID + "/subscriptions")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	if err := c.getJSON(fmt.Sprintf("/championships/%s/subscriptions?%s", championshipID, params.Encode()), &championshipSubscriptions); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &championshipSubscriptions)
-	if err != nil {
-		return nil, err
-	}
-
-	return &championshipSubscriptions, err
+	return &championshipSubscriptions, nil
 }

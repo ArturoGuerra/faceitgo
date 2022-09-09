@@ -1,8 +1,8 @@
 package faceitgo
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"fmt"
+	"net/url"
 )
 
 type (
@@ -38,60 +38,35 @@ type (
 
 func (c *RESTClient) GetGames(offset string, limit string) (*Games, error) {
 	var games Games
-	resp, err := c.Get("games")
-	if err != nil {
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	u := fmt.Sprintf("/games?%s", params.Encode())
+	if err := c.getJSON(u, &games); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &games)
-	if err != nil {
-		return nil, err
-	}
-
-	return &games, err
+	return &games, nil
 }
 
 func (c *RESTClient) GetGame(gameID string) (*Game, error) {
 	var game Game
-	resp, err := c.Get("games/" + gameID)
-	if err != nil {
+
+	if err := c.getJSON(fmt.Sprintf("/games/%s", gameID), &game); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &game)
-	if err != nil {
-		return nil, err
-	}
-
-	return &game, err
+	return &game, nil
 }
 
 func (c *RESTClient) GetGameParent(gameID string) (*Game, error) {
 	var game Game
-	resp, err := c.Get("games/" + gameID + "/parent")
-	if err != nil {
+
+	if err := c.getJSON(fmt.Sprintf("/games/%s/parent", gameID), &game); err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &game)
-	if err != nil {
-		return nil, err
-	}
-
-	return &game, err
+	return &game, nil
 }
