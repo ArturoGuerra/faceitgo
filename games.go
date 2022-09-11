@@ -3,6 +3,7 @@ package faceitgo
 import (
 	"fmt"
 	"net/url"
+	"strconv"
 )
 
 type (
@@ -36,12 +37,12 @@ type (
 	}
 )
 
-func (c *RESTClient) GetGames(offset string, limit string) (*Games, error) {
+func (c *RESTClient) GetGames(offset int, limit int) (*Games, error) {
 	var games Games
 
 	params := url.Values{}
-	params.Add("offset", offset)
-	params.Add("limit", limit)
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
 
 	u := fmt.Sprintf("/games?%s", params.Encode())
 	if err := c.getJSON(u, &games); err != nil {
@@ -51,20 +52,20 @@ func (c *RESTClient) GetGames(offset string, limit string) (*Games, error) {
 	return &games, nil
 }
 
-func (c *RESTClient) GetGame(gameID string) (*Game, error) {
+func (c *RESTClient) GetGame(game_id string) (*Game, error) {
 	var game Game
 
-	if err := c.getJSON(fmt.Sprintf("/games/%s", gameID), &game); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/games/%s", game_id), &game); err != nil {
 		return nil, err
 	}
 
 	return &game, nil
 }
 
-func (c *RESTClient) GetGameParent(gameID string) (*Game, error) {
+func (c *RESTClient) GetGameParent(game_id string) (*Game, error) {
 	var game Game
 
-	if err := c.getJSON(fmt.Sprintf("/games/%s/parent", gameID), &game); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/games/%s/parent", game_id), &game); err != nil {
 		return nil, err
 	}
 

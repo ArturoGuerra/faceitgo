@@ -1,9 +1,6 @@
 package faceitgo
 
-import (
-	"encoding/json"
-	"io/ioutil"
-)
+import "fmt"
 
 type (
 	Match struct {
@@ -74,22 +71,12 @@ type (
 	}
 )
 
-func (c *RESTClient) GetMatch(matchID string) (*Match, error) {
+func (c *RESTClient) GetMatch(match_id string) (*Match, error) {
 	var match Match
-	resp, err := c.get("/matches/" + matchID)
+	err := c.getJSON(fmt.Sprintf("/matches/%s", match_id), &match)
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(body, &match)
-	if err != nil {
-		return nil, err
-	}
-
-	return &match, err
+	return &match, nil
 }
