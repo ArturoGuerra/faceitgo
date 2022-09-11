@@ -45,7 +45,7 @@ func (c *RESTClient) GetGames(offset int, limit int) (*Games, error) {
 	params.Add("limit", strconv.Itoa(limit))
 
 	u := fmt.Sprintf("/games?%s", params.Encode())
-	if err := c.getJSON(u, &games); err != nil {
+	if err := c.getJSON(u, &games, nil); err != nil {
 		return nil, err
 	}
 
@@ -55,7 +55,7 @@ func (c *RESTClient) GetGames(offset int, limit int) (*Games, error) {
 func (c *RESTClient) GetGame(game_id string) (*Game, error) {
 	var game Game
 
-	if err := c.getJSON(fmt.Sprintf("/games/%s", game_id), &game); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/games/%s", game_id), &game, nil); err != nil {
 		return nil, err
 	}
 
@@ -65,7 +65,7 @@ func (c *RESTClient) GetGame(game_id string) (*Game, error) {
 func (c *RESTClient) GetGameParent(game_id string) (*Game, error) {
 	var game Game
 
-	if err := c.getJSON(fmt.Sprintf("/games/%s/parent", game_id), &game); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/games/%s/parent", game_id), &game, nil); err != nil {
 		return nil, err
 	}
 

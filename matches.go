@@ -73,7 +73,7 @@ type (
 
 func (c *RESTClient) GetMatch(match_id string) (*Match, error) {
 	var match Match
-	err := c.getJSON(fmt.Sprintf("/matches/%s", match_id), &match)
+	err := c.getJSON(fmt.Sprintf("/matches/%s", match_id), &match, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (c *RESTClient) GetMatch(match_id string) (*Match, error) {
 
 func (c *RESTClient) GetMatchStats(match_id string) (*MatchStats, error) {
 	var matchStats MatchStats
-	err := c.getJSON(fmt.Sprintf("/matches/%s/stats", match_id), &matchStats)
+	err := c.getJSON(fmt.Sprintf("/matches/%s/stats", match_id), &matchStats, nil)
 	if err != nil {
 		return nil, err
 	}

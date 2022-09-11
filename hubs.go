@@ -131,7 +131,7 @@ type (
 func (c *RESTClient) GetHub(hub_id string) (*Hub, error) {
 	var hub Hub
 
-	if err := c.getJSON(fmt.Sprintf("/hubs/%s", hub_id), &hub); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s", hub_id), &hub, nil); err != nil {
 		return nil, err
 	}
 
@@ -146,7 +146,7 @@ func (c *RESTClient) GetHubMatches(hub_id string, game_type string, offset int, 
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/hubs/%s/matches?%s", hub_id, params.Encode()), &hubMatches); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/matches", hub_id), &hubMatches, params); err != nil {
 		return nil, err
 	}
 
@@ -160,7 +160,7 @@ func (c *RESTClient) GetHubMembers(hub_id string, offset int, limit int) (*HubMe
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/hubs/%s/members?%s", hub_id, params.Encode()), &hubMembers); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/members", hub_id), &hubMembers, nil); err != nil {
 		return nil, err
 	}
 
@@ -174,7 +174,7 @@ func (c *RESTClient) GetHubRoles(hub_id string, offset int, limit int) (*HubRole
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/hubs/%s/roles?%s", hub_id, params.Encode()), &hubRoles); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/roles", hub_id), &hubRoles, params); err != nil {
 		return nil, err
 	}
 
@@ -188,7 +188,7 @@ func (c *RESTClient) GetHubRules(hub_id string, offset int, limit int) (*HubRule
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/hubs/%s/rules?%s", hub_id, params.Encode()), &hubRules); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/rules", hub_id), &hubRules, params); err != nil {
 		return nil, err
 	}
 
@@ -202,7 +202,7 @@ func (c *RESTClient) GetHubStats(hub_id string, offset int, limit int) (*HubStat
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/hubs/%s/stats?%s", hub_id, params.Encode()), &hubStats); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/hubs/%s/stats", hub_id), &hubStats, nil); err != nil {
 		return nil, err
 	}
 

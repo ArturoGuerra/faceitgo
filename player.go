@@ -1,5 +1,10 @@
 package faceitgo
 
+import (
+	"fmt"
+	"net/url"
+)
+
 type (
 	Player struct {
 		Avatar             string   `json:"avatar"`
@@ -94,3 +99,36 @@ type (
 		Items []Tournament `json:"items"`
 	}
 )
+
+func (c *RESTClient) GetPlayer(nickname string, game string, game_player_id string) (*Player, error) {
+	var player Player
+
+	params := url.Values{}
+	params.Add("nickname", nickname)
+	params.Add("game", game)
+	params.Add("game_player_id", game_player_id)
+
+	err := c.getJSON("/players", &player, params)
+
+	return &player, err
+}
+
+func (c *RESTClient) GetPlayerByID(player_id string) (*Player, error) {
+	var player Player
+
+	err := c.getJSON(fmt.Sprintf("/players/%s", player_id), &player, nil)
+
+	return &player, err
+}
+
+func (c *RESTClient) GetPlayerMatchHistory(player_id string, offset string, limit string) (*PlayerMatches, error) {
+	var matches PlayerMatches
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	err := c.getJSON(fmt.Sprintf("/players/%s/history", player_id), &matches, params)
+
+	return &matches, err
+}

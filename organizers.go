@@ -46,7 +46,10 @@ type (
 func (c *RESTClient) GetOrganizerByName(organizer_name string) (*Organizer, error) {
 	var organizer Organizer
 
-	if err := c.getJSON(fmt.Sprintf("/organizers?name=%s", organizer_name), &organizer); err != nil {
+	params := url.Values{}
+	params.Add("name", organizer_name)
+
+	if err := c.getJSON("/organizers", &organizer, params); err != nil {
 		return nil, err
 	}
 
@@ -56,7 +59,7 @@ func (c *RESTClient) GetOrganizerByName(organizer_name string) (*Organizer, erro
 func (c *RESTClient) GetOrganizer(organizer_id string) (*Organizer, error) {
 	var organizer Organizer
 
-	if err := c.getJSON(fmt.Sprintf("/organizers/%s", organizer_id), &organizer); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/organizers/%s", organizer_id), &organizer, nil); err != nil {
 		return nil, err
 	}
 
@@ -70,7 +73,7 @@ func (c *RESTClient) GetOrganizersChampionships(organizer_id string, offset int,
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/organizers/%s/championships?%s", organizer_id, params.Encode()), &championships); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/organizers/%s/championships", organizer_id), &championships, nil); err != nil {
 		return nil, err
 	}
 
@@ -80,7 +83,7 @@ func (c *RESTClient) GetOrganizersChampionships(organizer_id string, offset int,
 func (c *RESTClient) GetOrganizersGames(organizer_id string) ([]string, error) {
 	var games []string
 
-	if err := c.getJSON(fmt.Sprintf("/organizers/%s/games", organizer_id), &games); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/organizers/%s/games", organizer_id), &games, nil); err != nil {
 		return nil, err
 	}
 
@@ -94,7 +97,7 @@ func (c *RESTClient) GetOrganizersHubs(organizer_id string, offset int, limit in
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/organizers/%s/hubs?%s", organizer_id, params.Encode()), &hubs); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/organizers/%s/hubs", organizer_id), &hubs, nil); err != nil {
 		return nil, err
 	}
 
@@ -109,7 +112,7 @@ func (c *RESTClient) GetOrganizersTournaments(organizer_id string, game_type str
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/organizers/%s/tournaments?%s", organizer_id, params.Encode()), &tournaments); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/organizers/%s/tournaments", organizer_id), &tournaments, nil); err != nil {
 		return nil, err
 	}
 

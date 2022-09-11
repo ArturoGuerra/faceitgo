@@ -197,18 +197,17 @@ func (c *RESTClient) GetChampionships(game_id string, game_type string, offset i
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	u := fmt.Sprintf("/championships?%s", params.Encode())
-	if err := c.getJSON(u, &championships); err != nil {
+	if err := c.getJSON("/championships", &championships, params); err != nil {
 		return nil, err
 	}
 
 	return &championships, nil
 }
 
-func (c *RESTClient) GetChampionship(championshipID string) (*Championship, error) {
+func (c *RESTClient) GetChampionship(championship_id string) (*Championship, error) {
 	var championship Championship
 
-	if err := c.getJSON("/championships/"+championshipID, &championship); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/championships/%s", championship_id), &championship, nil); err != nil {
 		return nil, err
 	}
 
@@ -223,8 +222,8 @@ func (c *RESTClient) GetChampionshipMatches(championship_id string, game_type st
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	u := fmt.Sprintf("/championships/%s/matches?%s", championship_id, params.Encode())
-	if err := c.getJSON(u, &championshipMatches); err != nil {
+	u := fmt.Sprintf("/championships/%s/matches", championship_id)
+	if err := c.getJSON(u, &championshipMatches, params); err != nil {
 		return nil, err
 	}
 
@@ -238,9 +237,9 @@ func (c *RESTClient) GetChampionshipResults(championship_id string, offset int, 
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	u := fmt.Sprintf("/championships/%s/results?%s", championship_id, params.Encode())
+	u := fmt.Sprintf("/championships/%s/results", championship_id)
 
-	if err := c.getJSON(u, &championshipResults); err != nil {
+	if err := c.getJSON(u, &championshipResults, params); err != nil {
 		return nil, err
 	}
 
@@ -254,7 +253,7 @@ func (c *RESTClient) GetChampionshipSubscriptions(championship_id string, offset
 	params.Add("offset", strconv.Itoa(offset))
 	params.Add("limit", strconv.Itoa(limit))
 
-	if err := c.getJSON(fmt.Sprintf("/championships/%s/subscriptions?%s", championship_id, params.Encode()), &championshipSubscriptions); err != nil {
+	if err := c.getJSON(fmt.Sprintf("/championships/%s/subscriptions", championship_id), &championshipSubscriptions, params); err != nil {
 		return nil, err
 	}
 

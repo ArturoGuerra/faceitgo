@@ -3,8 +3,10 @@ package faceitgo
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 const BASE_URL = "https://open.faceit.com/data/v4"
@@ -28,7 +30,7 @@ func New(cfg *RESTConfig) *RESTClient {
 }
 
 func (c *RESTClient) get(path string) (*http.Response, error) {
-	req, err := http.NewRequest("GET", BASE_URL+path, nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s", BASE_URL, path), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +38,11 @@ func (c *RESTClient) get(path string) (*http.Response, error) {
 	return c.Do(req)
 }
 
-func (c *RESTClient) getJSON(path string, v interface{}) error {
+func (c *RESTClient) getJSON(path string, v interface{}, query url.Values) error {
+	if query != nil {
+		path = fmt.Sprintf("%s?%s", path, query.Encode())
+	}
+
 	resp, err := c.get(path)
 	if err != nil {
 		return err
