@@ -152,3 +152,15 @@ func (c *RESTClient) GetPlayerStats(player_id string, game_id string) (*PlayerSt
 
 	return &stats, err
 }
+
+func (c *RESTClient) GetPlayerTournaments(player_id string, offset string, limit string) (*PlayerTournaments, error) {
+	var tournaments PlayerTournaments
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	err := c.getJSON(fmt.Sprintf("/players/%s/tournaments", player_id), &tournaments, params)
+
+	return &tournaments, err
+}
