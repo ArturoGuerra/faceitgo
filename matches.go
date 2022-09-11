@@ -80,3 +80,13 @@ func (c *RESTClient) GetMatch(match_id string) (*Match, error) {
 
 	return &match, nil
 }
+
+func (c *RESTClient) GetMatchStats(match_id string) (*MatchStats, error) {
+	var matchStats MatchStats
+	err := c.getJSON(fmt.Sprintf("/matches/%s/stats", match_id), &matchStats)
+	if err != nil {
+		return nil, err
+	}
+
+	return &matchStats, nil
+}
