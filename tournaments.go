@@ -1,5 +1,11 @@
 package faceitgo
 
+import (
+	"fmt"
+	"net/url"
+	"strconv"
+)
+
 type (
 	Tournament struct {
 		AnticheatRequired           bool     `json:"anticheat_required"`
@@ -73,7 +79,7 @@ type (
 		WhitelistCountries          []string      `json:"whitelist_countries"`
 	}
 
-	TournamentBracket struct {
+	TournamentBrackets struct {
 		Game    string `json:"game"`
 		Matches []struct {
 			FaceitUrl string `json:"faceit_url"`
@@ -127,3 +133,37 @@ type (
 		Started   []TournamentTeam `json:"started"`
 	}
 )
+
+func (c *RESTClient) GetTournament(tournament_id string) (TournamentDetails, error) {
+	var tournament TournamentDetails
+	err := c.getJSON(fmt.Sprintf("/tournaments/%s", tournament_id), &tournament, nil)
+	return tournament, err
+}
+
+func (c *RESTClient) GetTournamentBrackets(tournament_id string) (TournamentBrackets, error) {
+	var tournament TournamentBrackets
+	err := c.getJSON(fmt.Sprintf("/tournaments/%s/brackets", tournament_id), &tournament, nil)
+	return tournament, err
+}
+
+func (c *RESTClient) GetTournamentMatches(tournament_id string, offset int, limit int) (TournamentMatches, error) {
+	var tournament TournamentMatches
+
+	params := url.Values{}
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
+
+	err := c.getJSON(fmt.Sprintf("/tournaments/%s/matches", tournament_id), &tournament, params)
+	return tournament, err
+}
+
+func (c *RESTClient) GetTournamentTeams(tournament_id string, offset int, limit int) (TournamentTeams, error) {
+	var tournament TournamentTeams
+
+	params := url.Values{}
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
+
+	err := c.getJSON(fmt.Sprintf("/tournaments/%s/teams", tournament_id), &tournament, params)
+	return tournament, err
+}

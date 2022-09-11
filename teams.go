@@ -1,5 +1,10 @@
 package faceitgo
 
+import (
+	"fmt"
+	"net/url"
+)
+
 type (
 	Team struct {
 		Avatar      string `json:"avatar"`
@@ -36,3 +41,37 @@ type (
 		TeamID   string                   `json:"team_id"`
 	}
 )
+
+func (c *RESTClient) GetTeam(team_id string) (*Team, error) {
+	var team Team
+
+	if err := c.getJSON(fmt.Sprintf("/teams/%s", team_id), &team, nil); err != nil {
+		return nil, err
+	}
+
+	return &team, nil
+}
+
+func (c *RESTClient) GetTeamStats(team_id string, game_id string) (*TeamStats, error) {
+	var teamStats TeamStats
+
+	if err := c.getJSON(fmt.Sprintf("/teams/%s/stats/%s", team_id, game_id), &teamStats, nil); err != nil {
+		return nil, err
+	}
+
+	return &teamStats, nil
+}
+
+func (c *RESTClient) GetTeamTournaments(team_id string, offset string, limit string) (*Tournaments, error) {
+	var tournaments Tournaments
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	if err := c.getJSON(fmt.Sprintf("/teams/%s/tournaments", team_id), &tournaments, params); err != nil {
+		return nil, err
+	}
+
+	return &tournaments, nil
+}

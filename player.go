@@ -132,3 +132,23 @@ func (c *RESTClient) GetPlayerMatchHistory(player_id string, offset string, limi
 
 	return &matches, err
 }
+
+func (c *RESTClient) GetPlayerHubs(player_id string, offset string, limit string) (*PlayerHubs, error) {
+	var hubs PlayerHubs
+
+	params := url.Values{}
+	params.Add("offset", offset)
+	params.Add("limit", limit)
+
+	err := c.getJSON(fmt.Sprintf("/players/%s/hubs", player_id), &hubs, params)
+
+	return &hubs, err
+}
+
+func (c *RESTClient) GetPlayerStats(player_id string, game_id string) (*PlayerStats, error) {
+	var stats PlayerStats
+
+	err := c.getJSON(fmt.Sprintf("/players/%s/stats/%s", player_id, game_id), &stats, nil)
+
+	return &stats, err
+}
