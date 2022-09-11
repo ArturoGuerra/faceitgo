@@ -3,7 +3,7 @@ package faceitgo
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -42,7 +42,7 @@ func (c *RESTClient) getJSON(path string, v interface{}) error {
 		return err
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
