@@ -1,5 +1,10 @@
 package faceitgo
 
+import (
+	"net/url"
+	"strconv"
+)
+
 type (
 	SearchChampionship struct {
 		CompetitionID   string `json:"competition_id"`
@@ -118,9 +123,99 @@ type (
 		Status          string `json:"status"`
 		TotalPrize      int    `json:"total_prize"`
 	}
+
 	SearchTournaments struct {
 		Start int                `json:"start"`
 		End   int                `json:"end"`
 		Items []SearchTournament `json:"items"`
 	}
 )
+
+func (c *RESTClient) SearchChampionships(name string, game string, region string, game_type string, offset int, limit int) (*SearchChampionships, error) {
+	var searchChampionships SearchChampionships
+
+	params := url.Values{}
+	params.Add("name", name)
+	params.Add("game", game)
+	params.Add("region", region)
+	params.Add("type", game_type)
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
+
+	err := c.getJSON("/search/championships", &searchChampionships, params)
+
+	return &searchChampionships, err
+}
+
+func (c *RESTClient) SearchHubs(name string, game string, region string, offset int, limit int) (*SearchHubs, error) {
+	var searchHubs SearchHubs
+
+	params := url.Values{}
+	params.Add("name", name)
+	params.Add("game", game)
+	params.Add("region", region)
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
+
+	err := c.getJSON("/search/hubs", &searchHubs, params)
+
+	return &searchHubs, err
+}
+
+func (c *RESTClient) SearchOrganizers(name string, offset int, limit int) (*SearchOrganizers, error) {
+	var searchOrganizers SearchOrganizers
+
+	params := url.Values{}
+	params.Add("name", name)
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
+
+	err := c.getJSON("/search/organizers", &searchOrganizers, params)
+
+	return &searchOrganizers, err
+}
+
+func (c *RESTClient) SearchPlayers(nickname string, game string, country string, offset int, limit int) (*SearchPlayers, error) {
+	var searchPlayers SearchPlayers
+
+	params := url.Values{}
+	params.Add("nickname", nickname)
+	params.Add("game", game)
+	params.Add("country", country)
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
+
+	err := c.getJSON("/search/players", &searchPlayers, params)
+
+	return &searchPlayers, err
+}
+
+func (c *RESTClient) SearchTeams(nickname string, game string, offset int, limit int) (*SearchTeams, error) {
+	var searchTeams SearchTeams
+
+	params := url.Values{}
+	params.Add("name", nickname)
+	params.Add("game", game)
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
+
+	err := c.getJSON("/search/teams", &searchTeams, params)
+
+	return &searchTeams, err
+}
+
+func (c *RESTClient) SearchTournaments(name string, game string, region string, game_type string, offset int, limit int) (*SearchTournaments, error) {
+	var searchTournaments SearchTournaments
+
+	params := url.Values{}
+	params.Add("name", name)
+	params.Add("game", game)
+	params.Add("region", region)
+	params.Add("type", game_type)
+	params.Add("offset", strconv.Itoa(offset))
+	params.Add("limit", strconv.Itoa(limit))
+
+	err := c.getJSON("/search/tournaments", &searchTournaments, params)
+
+	return &searchTournaments, err
+}
