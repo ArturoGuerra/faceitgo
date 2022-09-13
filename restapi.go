@@ -30,7 +30,7 @@ func New(cfg *RESTConfig) *RESTClient {
 }
 
 func (c *RESTClient) get(path string) (*http.Response, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/%s", BASE_URL, path), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s%s", BASE_URL, path), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (c *RESTClient) getJSON(path string, v interface{}, query url.Values) error
 }
 
 func (c *RESTClient) getPriv(path string) (*http.Response, error) {
-	req, err := http.NewRequest("GET", BASE_URL+path, nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s%s", BASE_URL, path), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (c *RESTClient) getPriv(path string) (*http.Response, error) {
 }
 
 func (c *RESTClient) postPriv(path string, body []byte) (*http.Response, error) {
-	req, err := http.NewRequest("POST", BASE_URL+path, bytes.NewBuffer(body))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", BASE_URL, path), bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}
