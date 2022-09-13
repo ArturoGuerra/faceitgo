@@ -34,7 +34,7 @@ func (c *RESTClient) get(path string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Authorization", "Bearer "+c.Config.Token)
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.Config.Token))
 	return c.Do(req)
 }
 
@@ -66,7 +66,7 @@ func (c *RESTClient) getPriv(path string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Authorization", "Bearer "+c.Config.PrivToken)
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.Config.PrivToken))
 	return c.Do(req)
 }
 
@@ -75,6 +75,6 @@ func (c *RESTClient) postPriv(path string, body []byte) (*http.Response, error) 
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Authorization", "Bearer "+c.Config.PrivToken)
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.Config.PrivToken))
 	return c.Do(req)
 }
