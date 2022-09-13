@@ -23,24 +23,6 @@ type (
 		Website        string `json:"website"`
 		YouTube        string `json:"youtube"`
 	}
-
-	OrganizerChampionships struct {
-		Start int            `json:"start"`
-		End   int            `json:"end"`
-		Items []Championship `json:"items"`
-	}
-
-	OrganizerHubs struct {
-		Start int   `json:"start"`
-		End   int   `json:"end"`
-		Items []Hub `json:"items"`
-	}
-
-	OrganizerTournaments struct {
-		Start int          `json:"start"`
-		End   int          `json:"end"`
-		Items []Tournament `json:"items"`
-	}
 )
 
 func (c *RESTClient) GetOrganizerByName(organizer_name string) (*Organizer, error) {
@@ -66,8 +48,8 @@ func (c *RESTClient) GetOrganizer(organizer_id string) (*Organizer, error) {
 	return &organizer, nil
 }
 
-func (c *RESTClient) GetOrganizersChampionships(organizer_id string, offset int, limit int) (*OrganizerChampionships, error) {
-	var championships OrganizerChampionships
+func (c *RESTClient) GetOrganizersChampionships(organizer_id string, offset int, limit int) (*Championships, error) {
+	var championships Championships
 
 	params := url.Values{}
 	params.Add("offset", strconv.Itoa(offset))
@@ -90,8 +72,8 @@ func (c *RESTClient) GetOrganizersGames(organizer_id string) ([]string, error) {
 	return games, nil
 }
 
-func (c *RESTClient) GetOrganizersHubs(organizer_id string, offset int, limit int) (*OrganizerHubs, error) {
-	var hubs OrganizerHubs
+func (c *RESTClient) GetOrganizersHubs(organizer_id string, offset int, limit int) (*Hubs, error) {
+	var hubs Hubs
 
 	params := url.Values{}
 	params.Add("offset", strconv.Itoa(offset))
@@ -104,8 +86,8 @@ func (c *RESTClient) GetOrganizersHubs(organizer_id string, offset int, limit in
 	return &hubs, nil
 }
 
-func (c *RESTClient) GetOrganizersTournaments(organizer_id string, game_type string, offset int, limit int) (*OrganizerTournaments, error) {
-	var tournaments OrganizerTournaments
+func (c *RESTClient) GetOrganizersTournaments(organizer_id string, game_type string, offset int, limit int) (*Tournaments, error) {
+	var tournaments Tournaments
 
 	params := url.Values{}
 	params.Add("type", game_type)

@@ -111,12 +111,6 @@ type (
 		Status string `json:"status"`
 	}
 
-	TournamentMatches struct {
-		Start int     `json:"start"`
-		End   int     `json:"end"`
-		Items []Match `json:"items"`
-	}
-
 	TournamentTeam struct {
 		Nickname   string `json:"nickname"`
 		Skilllevel int    `json:"skilllevel"`
@@ -146,8 +140,8 @@ func (c *RESTClient) GetTournamentBrackets(tournament_id string) (TournamentBrac
 	return tournament, err
 }
 
-func (c *RESTClient) GetTournamentMatches(tournament_id string, offset int, limit int) (TournamentMatches, error) {
-	var tournament TournamentMatches
+func (c *RESTClient) GetTournamentMatches(tournament_id string, offset int, limit int) (Matches, error) {
+	var tournament Matches
 
 	params := url.Values{}
 	params.Add("offset", strconv.Itoa(offset))

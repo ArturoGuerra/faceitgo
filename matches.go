@@ -47,6 +47,12 @@ type (
 		Voting  map[string]interface{} `json:"voting"`
 	}
 
+	Matches struct {
+		Start int     `json:"start"`
+		End   int     `json:"end"`
+		Items []Match `json:"items"`
+	}
+
 	MatchStats struct {
 		Rounds []struct {
 			BestOf        int                    `json:"best_of"`

@@ -80,23 +80,11 @@ type (
 		Items []PlayerMatch `json:"items"`
 	}
 
-	PlayerHubs struct {
-		Start int   `json:"start"`
-		End   int   `json:"end"`
-		Items []Hub `json:"items"`
-	}
-
 	PlayerStats struct {
 		GameID   string                   `json:"game_id"`
 		Lifetime map[string]interface{}   `json:"lifetime"`
 		PlayerID string                   `json:"player_id"`
 		Segments []map[string]interface{} `json:"segments"`
-	}
-
-	PlayerTournaments struct {
-		Start int          `json:"start"`
-		End   int          `json:"end"`
-		Items []Tournament `json:"items"`
 	}
 )
 
@@ -133,8 +121,8 @@ func (c *RESTClient) GetPlayerMatchHistory(player_id string, offset string, limi
 	return &matches, err
 }
 
-func (c *RESTClient) GetPlayerHubs(player_id string, offset string, limit string) (*PlayerHubs, error) {
-	var hubs PlayerHubs
+func (c *RESTClient) GetPlayerHubs(player_id string, offset string, limit string) (*Hubs, error) {
+	var hubs Hubs
 
 	params := url.Values{}
 	params.Add("offset", offset)
@@ -153,8 +141,8 @@ func (c *RESTClient) GetPlayerStats(player_id string, game_id string) (*PlayerSt
 	return &stats, err
 }
 
-func (c *RESTClient) GetPlayerTournaments(player_id string, offset string, limit string) (*PlayerTournaments, error) {
-	var tournaments PlayerTournaments
+func (c *RESTClient) GetPlayerTournaments(player_id string, offset string, limit string) (*Tournaments, error) {
+	var tournaments Tournaments
 
 	params := url.Values{}
 	params.Add("offset", offset)
