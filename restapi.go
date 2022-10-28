@@ -9,7 +9,11 @@ import (
 	"net/url"
 )
 
-const BASE_URL = "https://open.faceit.com/data/v4"
+const (
+	BASE_DATA_URL    = "https://open.faceit.com/data/v4"
+	BASE_CHAT_URL    = "https://open.faceit.com/chat/v1"
+	BASE_PRIVATE_URL = "https://api.faceit.com"
+)
 
 type (
 	RESTConfig struct {
@@ -30,7 +34,7 @@ func New(cfg *RESTConfig) *RESTClient {
 }
 
 func (c *RESTClient) get(path string) (*http.Response, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s%s", BASE_URL, path), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s%s", BASE_DATA_URL, path), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -61,8 +65,26 @@ func (c *RESTClient) getJSON(path string, v interface{}, query url.Values) error
 	return nil
 }
 
+func (c *RESTClient) getChat(path string) (*http.Response, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s%s", BASE_CHAT_URL, path), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.Config.Token))
+	return c.Do(req)
+}
+
+func (c *RESTClient) postChat(path string, body []byte) (*http.Response, error) {
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", BASE_CHAT_URL, path), bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.Config.Token))
+	return c.Do(req)
+}
+
 func (c *RESTClient) getPriv(path string) (*http.Response, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s%s", BASE_URL, path), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s%s", BASE_PRIVATE_URL, path), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +93,7 @@ func (c *RESTClient) getPriv(path string) (*http.Response, error) {
 }
 
 func (c *RESTClient) deletePriv(path string) (*http.Response, error) {
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s%s", BASE_URL, path), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s%s", BASE_PRIVATE_URL, path), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +102,7 @@ func (c *RESTClient) deletePriv(path string) (*http.Response, error) {
 }
 
 func (c *RESTClient) postPriv(path string, body []byte) (*http.Response, error) {
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", BASE_URL, path), bytes.NewBuffer(body))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", BASE_PRIVATE_URL, path), bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}
