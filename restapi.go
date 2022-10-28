@@ -70,6 +70,15 @@ func (c *RESTClient) getPriv(path string) (*http.Response, error) {
 	return c.Do(req)
 }
 
+func (c *RESTClient) deletePriv(path string) (*http.Response, error) {
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s%s", BASE_URL, path), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.Config.PrivToken))
+	return c.Do(req)
+}
+
 func (c *RESTClient) postPriv(path string, body []byte) (*http.Response, error) {
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", BASE_URL, path), bytes.NewBuffer(body))
 	if err != nil {
