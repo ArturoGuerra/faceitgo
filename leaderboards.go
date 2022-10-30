@@ -65,12 +65,17 @@ type (
 	}
 )
 
-func (c *RESTClient) GetChampionshipLeaderboards(championship_id string, offset int, limit int) (*Leaderboards, error) {
+func (c *RESTClient) GetChampionshipLeaderboards(championship_id string, offset, limit *int) (*Leaderboards, error) {
 	var leaderboards Leaderboards
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	u := fmt.Sprintf("/leaderboards/championships/%s", championship_id)
 	if err := c.getJSON(u, &leaderboards, params); err != nil {
@@ -80,12 +85,17 @@ func (c *RESTClient) GetChampionshipLeaderboards(championship_id string, offset 
 	return &leaderboards, nil
 }
 
-func (c *RESTClient) GetChampionshipsGroupRanking(championsip_id string, group int, offset int, limit int) (*LeaderboardRankings, error) {
+func (c *RESTClient) GetChampionshipsGroupRanking(championsip_id string, group int, offset, limit *int) (*LeaderboardRankings, error) {
 	var leaderboardRankings LeaderboardRankings
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	u := fmt.Sprintf("/leaderboards/championships/%s/group/%d", championsip_id, group)
 	if err := c.getJSON(u, &leaderboardRankings, params); err != nil {
@@ -95,12 +105,17 @@ func (c *RESTClient) GetChampionshipsGroupRanking(championsip_id string, group i
 	return &leaderboardRankings, nil
 }
 
-func (c *RESTClient) GetHubsLeaderboards(hub_id string, offset string, limit string) (*Leaderboards, error) {
+func (c *RESTClient) GetHubsLeaderboards(hub_id string, offset, limit *int) (*Leaderboards, error) {
 	var leaderboards Leaderboards
 
 	params := url.Values{}
-	params.Add("offset", offset)
-	params.Add("limit", limit)
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	u := fmt.Sprintf("/leaderboards/hubs/%s", hub_id)
 	if err := c.getJSON(u, &leaderboards, params); err != nil {
@@ -110,12 +125,17 @@ func (c *RESTClient) GetHubsLeaderboards(hub_id string, offset string, limit str
 	return &leaderboards, nil
 }
 
-func (c *RESTClient) GetHubRankings(hub_id string, offset int, limit int) (*LeaderboardRankings, error) {
+func (c *RESTClient) GetHubRankings(hub_id string, offset, limit *int) (*LeaderboardRankings, error) {
 	var leaderboardRankings LeaderboardRankings
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	u := fmt.Sprintf("/leaderboards/hubs/%s/general", hub_id)
 	if err := c.getJSON(u, &leaderboardRankings, params); err != nil {
@@ -125,12 +145,17 @@ func (c *RESTClient) GetHubRankings(hub_id string, offset int, limit int) (*Lead
 	return &leaderboardRankings, nil
 }
 
-func (c *RESTClient) GetLeaderboardRankings(leaderboard_id string, offset int, limit int) (*LeaderboardRankings, error) {
+func (c *RESTClient) GetLeaderboardRankings(leaderboard_id string, offset, limit *int) (*LeaderboardRankings, error) {
 	var leaderboard LeaderboardRankings
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	u := fmt.Sprintf("/leaderboards/%s", leaderboard_id)
 	if err := c.getJSON(u, &leaderboard, params); err != nil {

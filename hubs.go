@@ -90,13 +90,21 @@ func (c *RESTClient) GetHub(hub_id string) (*Hub, error) {
 	return &hub, nil
 }
 
-func (c *RESTClient) GetHubMatches(hub_id string, game_type string, offset int, limit int) (*Matches, error) {
+func (c *RESTClient) GetHubMatches(hub_id string, game_type *string, offset, limit *int) (*Matches, error) {
 	var hubMatches Matches
 
 	params := url.Values{}
-	params.Add("type", game_type)
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if game_type != nil {
+		params.Add("type", *game_type)
+	}
+
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	if err := c.getJSON(fmt.Sprintf("/hubs/%s/matches", hub_id), &hubMatches, params); err != nil {
 		return nil, err
@@ -105,12 +113,17 @@ func (c *RESTClient) GetHubMatches(hub_id string, game_type string, offset int, 
 	return &hubMatches, nil
 }
 
-func (c *RESTClient) GetHubMembers(hub_id string, offset int, limit int) (*HubMembers, error) {
+func (c *RESTClient) GetHubMembers(hub_id string, offset, limit *int) (*HubMembers, error) {
 	var hubMembers HubMembers
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	if err := c.getJSON(fmt.Sprintf("/hubs/%s/members", hub_id), &hubMembers, nil); err != nil {
 		return nil, err
@@ -119,12 +132,17 @@ func (c *RESTClient) GetHubMembers(hub_id string, offset int, limit int) (*HubMe
 	return &hubMembers, nil
 }
 
-func (c *RESTClient) GetHubRoles(hub_id string, offset int, limit int) (*HubRoles, error) {
+func (c *RESTClient) GetHubRoles(hub_id string, offset, limit *int) (*HubRoles, error) {
 	var hubRoles HubRoles
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	if err := c.getJSON(fmt.Sprintf("/hubs/%s/roles", hub_id), &hubRoles, params); err != nil {
 		return nil, err
@@ -133,12 +151,17 @@ func (c *RESTClient) GetHubRoles(hub_id string, offset int, limit int) (*HubRole
 	return &hubRoles, nil
 }
 
-func (c *RESTClient) GetHubRules(hub_id string, offset int, limit int) (*HubRules, error) {
+func (c *RESTClient) GetHubRules(hub_id string, offset, limit *int) (*HubRules, error) {
 	var hubRules HubRules
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	if err := c.getJSON(fmt.Sprintf("/hubs/%s/rules", hub_id), &hubRules, params); err != nil {
 		return nil, err
@@ -147,12 +170,17 @@ func (c *RESTClient) GetHubRules(hub_id string, offset int, limit int) (*HubRule
 	return &hubRules, nil
 }
 
-func (c *RESTClient) GetHubStats(hub_id string, offset int, limit int) (*HubStats, error) {
+func (c *RESTClient) GetHubStats(hub_id string, offset, limit *int) (*HubStats, error) {
 	var hubStats HubStats
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	if err := c.getJSON(fmt.Sprintf("/hubs/%s/stats", hub_id), &hubStats, nil); err != nil {
 		return nil, err

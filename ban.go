@@ -43,7 +43,12 @@ func (c *RESTClient) CreateBan(hubId, userId, reason string) error {
 		return err
 	}
 
-	_, err = c.postPriv("/hubs/v1/hub/"+hubId+"/ban/"+userId, payload)
+	resp, err := c.postPriv("/hubs/v1/hub/"+hubId+"/ban/"+userId, payload)
+	if err != nil {
+		return err
+	}
+
+	_, err = httpErrorHandler(resp)
 	if err != nil {
 		return err
 	}
@@ -52,7 +57,12 @@ func (c *RESTClient) CreateBan(hubId, userId, reason string) error {
 }
 
 func (c *RESTClient) DeleteBan(hubId, userId string) error {
-	_, err := c.deletePriv("/hubs/v1/hub/" + hubId + "/ban/" + userId)
+	resp, err := c.deletePriv("/hubs/v1/hub/" + hubId + "/ban/" + userId)
+	if err != nil {
+		return err
+	}
+
+	_, err = httpErrorHandler(resp)
 	if err != nil {
 		return err
 	}

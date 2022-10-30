@@ -37,12 +37,17 @@ type (
 	}
 )
 
-func (c *RESTClient) GetGames(offset int, limit int) (*Games, error) {
+func (c *RESTClient) GetGames(offset, limit *int) (*Games, error) {
 	var games Games
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	u := fmt.Sprintf("/games?%s", params.Encode())
 	if err := c.getJSON(u, &games, nil); err != nil {

@@ -138,14 +138,22 @@ type (
 	}
 )
 
-func (c *RESTClient) GetChampionships(game_id string, game_type string, offset int, limit int) (*Championships, error) {
+func (c *RESTClient) GetChampionships(game_id string, game_type *string, offset, limit *int) (*Championships, error) {
 	var championships Championships
 
 	params := url.Values{}
 	params.Add("game", game_id)
-	params.Add("type", game_type)
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if game_type != nil {
+		params.Add("type", *game_type)
+	}
+
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	if err := c.getJSON("/championships", &championships, params); err != nil {
 		return nil, err
@@ -164,13 +172,21 @@ func (c *RESTClient) GetChampionship(championship_id string) (*Championship, err
 	return &championship, nil
 }
 
-func (c *RESTClient) GetChampionshipMatches(championship_id string, game_type string, offset int, limit int) (*Matches, error) {
+func (c *RESTClient) GetChampionshipMatches(championship_id string, game_type *string, offset, limit *int) (*Matches, error) {
 	var championshipMatches Matches
 
 	params := url.Values{}
-	params.Add("type", game_type)
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if game_type != nil {
+		params.Add("type", *game_type)
+	}
+
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	u := fmt.Sprintf("/championships/%s/matches", championship_id)
 	if err := c.getJSON(u, &championshipMatches, params); err != nil {
@@ -180,12 +196,17 @@ func (c *RESTClient) GetChampionshipMatches(championship_id string, game_type st
 	return &championshipMatches, nil
 }
 
-func (c *RESTClient) GetChampionshipResults(championship_id string, offset int, limit int) (*ChampionshipResults, error) {
+func (c *RESTClient) GetChampionshipResults(championship_id string, offset, limit *int) (*ChampionshipResults, error) {
 	var championshipResults ChampionshipResults
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	u := fmt.Sprintf("/championships/%s/results", championship_id)
 
@@ -196,12 +217,17 @@ func (c *RESTClient) GetChampionshipResults(championship_id string, offset int, 
 	return &championshipResults, nil
 }
 
-func (c *RESTClient) GetChampionshipSubscriptions(championship_id string, offset int, limit int) (*ChampionshipSubscriptions, error) {
+func (c *RESTClient) GetChampionshipSubscriptions(championship_id string, offset, limit *int) (*ChampionshipSubscriptions, error) {
 	var championshipSubscriptions ChampionshipSubscriptions
 
 	params := url.Values{}
-	params.Add("offset", strconv.Itoa(offset))
-	params.Add("limit", strconv.Itoa(limit))
+	if offset != nil {
+		params.Add("offset", strconv.Itoa(*offset))
+	}
+
+	if limit != nil {
+		params.Add("limit", strconv.Itoa(*limit))
+	}
 
 	if err := c.getJSON(fmt.Sprintf("/championships/%s/subscriptions", championship_id), &championshipSubscriptions, params); err != nil {
 		return nil, err

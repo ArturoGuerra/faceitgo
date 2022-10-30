@@ -35,6 +35,11 @@ func (c *RESTClient) GetRoom(roomID string) (*RoomDetail, error) {
 		return nil, err
 	}
 
+	if resp.StatusCode != 200 {
+		_, err := httpErrorHandler(resp)
+		return nil, err
+	}
+
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
@@ -64,6 +69,11 @@ func (c *RESTClient) GetRoomMessages(roomID string, before *string, limit *int) 
 		return nil, err
 	}
 
+	if resp.StatusCode != 200 {
+		_, err := httpErrorHandler(resp)
+		return nil, err
+	}
+
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
@@ -88,6 +98,11 @@ func (c *RESTClient) PostRoomMessage(roomID, message string) (string, error) {
 
 	resp, err := c.postChat("/rooms/"+roomID+"/messages", data)
 	if err != nil {
+		return "", err
+	}
+
+	if resp.StatusCode != 200 {
+		_, err := httpErrorHandler(resp)
 		return "", err
 	}
 

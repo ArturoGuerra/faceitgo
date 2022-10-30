@@ -16,7 +16,7 @@ func main() {
 	rest := faceitgo.New(cfg)
 
 	// Get player info
-	player, err := rest.GetPlayerByID("1d212b72-3d21-4f3d-95d7-d2953f4bc740")
+	player, err := rest.GetPlayerByID("1d212b72-3d21-4f3d-95d7-d2953f4bc740-")
 	if err != nil {
 		panic(err)
 	}
